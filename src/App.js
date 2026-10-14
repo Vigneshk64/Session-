@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import Sidebar from "./Assets/components/Sidebar";
+import Navbar from "./Assets/components/Navbar";
+import Dashboard from "./pages/Dashboard";
+import AnimalManagement from "./pages/AnimalManagement";
+import FinanceManagement from "./pages/FinanceManagement";
+import "./App.css";
+export default function App() {
+  const [activePage, setActivePage] = useState("dashboard");
 
-function App() {
+  const pages = {
+    dashboard: {
+      title: "Impact Dashboard",
+      component: <Dashboard />,
+    },
+    animals: {
+      title: "Animal Welfare Management",
+      component: <AnimalManagement />,
+    },
+    finance: {
+      title: "Donation & Expense Tracking",
+      component: <FinanceManagement />,
+    },
+  };
+
+  const currentPage = pages[activePage];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-shell">
+      <Sidebar
+        activePage={activePage}
+        onNavigate={setActivePage}
+      />
+
+      <main className="main-content">
+        <Navbar title={currentPage.title} />
+        {currentPage.component}
+      </main>
     </div>
   );
 }
-
-export default App;
